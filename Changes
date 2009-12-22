@@ -1,5 +1,8 @@
 Changes file for IPC::Run3
 
+0.043_01 2009-12-22
+	Developer release to smoke out regressions wrt a fix for RT #52317
+
 0.043	2009-05-30
 	No code changes
 	add repository location to META.yml
