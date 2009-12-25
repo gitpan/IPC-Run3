@@ -22,6 +22,6 @@ t/fd_leak.t
 t/fork.t
 t/pod-coverage.t
 t/pod.t
-t/stdin.t
+t/read-stdin.pl
 t/utf8.t
 META.yml                                 Module meta-data (added by MakeMaker)

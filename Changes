@@ -1,5 +1,8 @@
 Changes file for IPC::Run3
 
+0.043_02 2009-12-26
+	Another developer release - fix the test, not the module
+
 0.043_01 2009-12-22
 	Developer release to smoke out regressions wrt a fix for RT #52317
 
