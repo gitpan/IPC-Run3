@@ -67,6 +67,27 @@ exit \$?;
 ...
 	    close $fh;
 	}
+
+# FIXME these tests fail, need further investigation
+#	# test: read from pipe
+#	{
+#	    my $zz_t = sprintf "t/zz_pipe_%03d.t", $run3_after;
+#	    open my $fh, ">", $zz_t or die "can't create $zz_t: $!";
+#	    print $fh <<"...";
+##!perl
+#
+#open my \$out, qq[| \$^X -e "require 't/read-stdin.pl'; read_stdin($nlines, $run3_after);"]
+#    or die "can't open pipe: \$!";
+#
+#open my \$in, "<", "$zz_txt" or die "can't open $zz_txt: \$!";
+#while (<\$in>) { print \$out \$_; }
+#close \$in;
+#
+#close \$out;
+#exit \$?;
+#...
+#	    close $fh;
+#	}
     }
 }
 

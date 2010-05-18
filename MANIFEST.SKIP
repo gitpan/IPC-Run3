@@ -7,7 +7,8 @@ CVS/.*
 ^mess/
 ^tmp/
 ^blib/
-^t/test.txt$
+^t/.*\.txt$
+^t/zz.*$
 ^Makefile$
 ^Makefile\.[a-z]+$
 ^pm_to_blib$

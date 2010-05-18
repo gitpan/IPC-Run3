@@ -1,5 +1,19 @@
 Changes file for IPC::Run3
 
+0.043_03 2010-05-18
+        Another developer release - RT #52317 still not fixed when
+        reading from a pipe (as opposed to reading from a file, either
+        redirected to stdin or in @ARGV).
+
+        Fix RT #57391 (bug reported and suggested fix by Kevin Ryde):
+        duping STD(IN,OUT,ERR) may get it wrong when the "target"
+        filehandle is also some STD* filehandle, e.g.
+
+          run3 [ ... ], \undef, \*STDERR, \*STDOUT;
+
+        Fix RT #57394: display it prominently in the docs that
+        run3 uses system (and hence is subject to system's idiosyncrasies).
+        
 0.043_02 2009-12-26
 	Another developer release - fix the test, not the module
 

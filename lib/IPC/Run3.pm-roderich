@@ -8,11 +8,11 @@ IPC::Run3 - run a subprocess with input/ouput redirection
 
 =head1 VERSION
 
-version 0.043_03
+version 0.043_02
 
 =cut
 
-our $VERSION = '0.043_03';
+our $VERSION = '0.043_02';
 
 =head1 SYNOPSIS
 
@@ -22,10 +22,9 @@ our $VERSION = '0.043_03';
 
 =head1 DESCRIPTION
 
-C<run3> uses the C<system> function to run a subprocess or shell
-command, with stdin, stdout, and/or stderr conveniently redirected
-to or from files, Perl data structures, or subroutines.
-It aims to satisfy 99% of the need for using C<system>, C<qx>, and C<open3> 
+This module allows you to run a subprocess and redirect stdin, stdout,
+and/or stderr to files and perl data structures.  It aims to satisfy 99% of the
+need for using C<system>, C<qx>, and C<open3> 
 with a simple, extremely Perlish API.
 
 Speed, simplicity, and portability are paramount.  (That's speed of Perl code;
@@ -370,32 +369,35 @@ sub run3 {
     open STDERR_SAVE, ">&STDERR" or croak "run3(): $! saving STDERR"
         if defined $err_fh;
 
-    # If dup'ing below FROM a filehandle that represents a STD... filehandle
-    # (i.e. fileno $fh <= 2), we may have dup'ed TO that filehandle 
-    # earlier (depending on the order of open statements below).
-    # An example is
-    #
-    #   run3 [ ... ], \undef, \*STDERR, \*STDOUT;
-    #
-    # But we already have filehandles that should be "safe" to
-    # dup from. So if fileno $fh <= 2 we don't dup from $fh,
-    # but from the corresponding *_SAVE filehandle instead.
-    my @saves = (fileno STDIN_SAVE, fileno STDOUT_SAVE, fileno STDERR_SAVE);
+    my @dups;
+    push @dups, { to => 0, from => fileno $in_fh, fh => \*STDIN, name => "STDIN", op => "<&" }
+        if defined $in_fh;
+    push @dups, { to => 1, from => fileno $out_fh, fh => \*STDOUT, name => "STDOUT", op => ">&" }
+	if defined $out_fh;
+    push @dups, { to => 2, from => fileno $err_fh, fh => \*STDERR, name => "STDERR", op => ">&" }
+	if defined $err_fh;
+
+    my @to;
+    $to[$_->{to}]++ foreach @dups;
 
     my $errno;
     my $ok = eval {
 
-        open STDIN,  "<&" . _dup_from($in_fh, \@saves)
-            or croak "run3(): $! redirecting STDIN"
-            if defined $in_fh;
+	my @tmp_fhs;
+	foreach (@dups) {
+	    next unless $to[$_->{from}];
+	    open my $fh, $_->{op}.$_->{from}
+		or croak "run3(): $! duplicating fd $_->{from}";
+	    croak "duplicated fd is still <= 2" if fileno $fh <= 2; # FIXME
+	    $_->{from} = fileno $fh;
+	    push @tmp_fhs, $fh;		# keep a reference around
+	}
 
-        open STDOUT, ">&" . _dup_from($out_fh, \@saves)
-            or croak "run3(): $! redirecting STDOUT"
-            if defined $out_fh;
 
-        open STDERR, ">&" . _dup_from($err_fh, \@saves)
-            or croak "run3(): $! redirecting STDERR"
-            if defined $err_fh;
+	foreach (@dups) {
+	    open $_->{fh},  $_->{op}.$_->{from}
+		or croak "run3(): $! redirecting $_->{name}";
+	}
 
         $sys_call_time = gettimeofday() if profiling;
 
@@ -459,13 +461,6 @@ sub run3 {
     return 1;
 }
 
-sub _dup_from {
-    my ($fh, $filenos) = @_;
-
-    my $dup_from = fileno $fh;
-    return defined $filenos->[$dup_from] ? $filenos->[$dup_from] : $dup_from;
-}
-
 1;
 
 __END__
@@ -490,10 +485,6 @@ had a successful exit code. Hence you should always check C<$?>.
 
 See L</%options> for an option to handle the case of C<system>
 returning -1 yourself.
-
-Note that C<run3> is subject to the same restrictions as C<system>,
-e.g. C<SIGINT> and C<SIGQUIT> are ignored during the execution of C<$cmd>
-(cf. L<perlfunc/system>).
 
 =head3 C<$cmd>
 

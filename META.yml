@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               IPC-Run3
-version:            0.043_02
+version:            0.043_03
 abstract:           run a subprocess with input/ouput redirection
 author:
     - Barrie Slaymaker <barries@slaysys.com>
@@ -23,7 +23,7 @@ no_index:
         - inc
     file:
         - bin/run3profpp
-generated_by:       ExtUtils::MakeMaker version 6.55_02
+generated_by:       ExtUtils::MakeMaker version 6.56
 meta-spec:
     url:      http://module-build.sourceforge.net/META-spec-v1.4.html
     version:  1.4
