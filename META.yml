@@ -1,29 +1,26 @@
---- #YAML:1.0
-name:               IPC-Run3
-version:            0.044
-abstract:           run a subprocess with input/ouput redirection
+---
+abstract: 'run a subprocess with input/ouput redirection'
 author:
-    - Barrie Slaymaker <barries@slaysys.com>
-license:            open_source
-distribution_type:  module
-configure_requires:
-    ExtUtils::MakeMaker:  0
+  - 'Barrie Slaymaker <barries@slaysys.com>'
 build_requires:
-    ExtUtils::MakeMaker:  0
-requires:
-    Test::More:   0.31
-    Time::HiRes:  0
-resources:
-    repository:  http://github.com/rjbs/ipc-run3/
-no_index:
-    dir:
-        - lib/IPC/Run3
-    directory:
-        - t
-        - inc
-    file:
-        - bin/run3profpp
-generated_by:       ExtUtils::MakeMaker version 6.56
+  ExtUtils::MakeMaker: 0
+configure_requires:
+  ExtUtils::MakeMaker: 0
+dynamic_config: 1
+generated_by: 'ExtUtils::MakeMaker version 6.62, CPAN::Meta::Converter version 2.112621'
+license: open_source
 meta-spec:
-    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
-    version:  1.4
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: IPC-Run3
+no_index:
+  directory:
+    - lib/IPC/Run3
+  file:
+    - bin/run3profpp
+requires:
+  Test::More: 0.31
+  Time::HiRes: 0
+resources:
+  repository: http://github.com/rjbs/ipc-run3/
+version: 0.045
