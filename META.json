@@ -4,7 +4,7 @@
       "Barrie Slaymaker <barries@slaysys.com>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "ExtUtils::MakeMaker version 6.62, CPAN::Meta::Converter version 2.112621",
+   "generated_by" : "ExtUtils::MakeMaker version 6.66, CPAN::Meta::Converter version 2.131560",
    "license" : [
       "open_source"
    ],
@@ -24,18 +24,18 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "ExtUtils::MakeMaker" : 0
+            "ExtUtils::MakeMaker" : "0"
          }
       },
       "configure" : {
          "requires" : {
-            "ExtUtils::MakeMaker" : 0
+            "ExtUtils::MakeMaker" : "0"
          }
       },
       "runtime" : {
          "requires" : {
             "Test::More" : "0.31",
-            "Time::HiRes" : 0
+            "Time::HiRes" : "0"
          }
       }
    },
@@ -45,5 +45,5 @@
          "url" : "http://github.com/rjbs/ipc-run3/"
       }
    },
-   "version" : "0.045"
+   "version" : "0.046"
 }
