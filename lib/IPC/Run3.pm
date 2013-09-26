@@ -8,11 +8,11 @@ IPC::Run3 - run a subprocess with input/ouput redirection
 
 =head1 VERSION
 
-version 0.046
+version 0.047
 
 =cut
 
-our $VERSION = '0.046';
+our $VERSION = '0.047';
 
 =head1 SYNOPSIS
 
@@ -44,7 +44,7 @@ use constant is_win32  => 0 <= index $^O, "Win32";
 
 BEGIN {
    if ( is_win32 ) {
-      eval "use Win32 qw( GetOSName ); 1" or die $@;
+      eval "use Win32 qw( GetOSName ); use Win32::ShellQuote qw(quote_native); 1" or die $@;
    }
 }
 
@@ -400,16 +400,7 @@ sub run3 {
         $sys_call_time = gettimeofday() if profiling;
 
         my $r = ref $cmd
-              ? system { $cmd->[0] }
-                       is_win32
-                           ? map {
-                                 # Probably need to offer a win32 escaping
-                                 # option, every command may be different.
-                                 ( my $s = $_ ) =~ s/"/"""/g;
-                                 $s = qq{"$s"};
-                                 $s;
-                             } @$cmd
-                           : @$cmd
+              ? system { $cmd->[0] } is_win32 ? quote_native( @$cmd ) : @$cmd
               : system $cmd;
 
        $errno = $!;              # save $!, because later failures will overwrite it
@@ -423,7 +414,13 @@ sub run3 {
            }
         }
 
-        croak $! if defined $r && $r == -1 && !$options->{return_if_system_error};
+        if (
+            defined $r
+            && ( $r == -1 || ( is_win32 && $r == 0xFF00 ) )
+            && !$options->{return_if_system_error}
+        ) {
+            croak( $errno );
+        }
 
         1;
     };
