@@ -3,15 +3,15 @@ abstract: 'run a subprocess with input/ouput redirection'
 author:
   - 'Barrie Slaymaker <barries@slaysys.com>'
 build_requires:
-  ExtUtils::MakeMaker: 0
+  ExtUtils::MakeMaker: '0'
 configure_requires:
-  ExtUtils::MakeMaker: 0
+  ExtUtils::MakeMaker: '0'
 dynamic_config: 1
-generated_by: 'ExtUtils::MakeMaker version 6.76, CPAN::Meta::Converter version 2.132620'
+generated_by: 'ExtUtils::MakeMaker version 6.92, CPAN::Meta::Converter version 2.140640'
 license: open_source
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
+  version: '1.4'
 name: IPC-Run3
 no_index:
   directory:
@@ -19,8 +19,8 @@ no_index:
   file:
     - bin/run3profpp
 requires:
-  Test::More: 0.31
-  Time::HiRes: 0
+  Test::More: '0.31'
+  Time::HiRes: '0'
 resources:
-  repository: http://github.com/rjbs/ipc-run3/
-version: 0.047
+  repository: http://github.com/rjbs/IPC-Run3/
+version: '0.048'
